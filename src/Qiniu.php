@@ -25,7 +25,8 @@ class Qiniu {
      * @return string
      */
     public function getSafeFilename($name) {
-        return preg_replace('/[^a-zA-Z\.\-_]/', '_', $name);
+        $name = urlencode($name);
+        return urldecode(preg_replace('/[^a-zA-Z0-9@%\.\-_]/', '_', $name));
     }
 
     /**
@@ -51,6 +52,7 @@ class Qiniu {
      * @return string|false
      */
     public function put($file) {
+        // return $this->getStorageKey($file);
         [$ret, $err] = $this->uploadMgr->putFile(
             $this->getUploadToken(),
             $this->getStorageKey($file),

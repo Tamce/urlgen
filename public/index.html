@@ -10,8 +10,8 @@
 </head>
 <body>
   <div style="text-align: center">
-    <div style="height: 300px; margin-bottom: 24px;">
-      <img id="image" style="max-height: 100%; max-width: 100%;" /><br />
+    <div style="height: 300px; margin-bottom: 24px; position:relative;">
+      <img id="image" style="max-height: 100%; max-width: 100%; position:absolute; left:0;right:0;top:0;bottom:0;margin:auto;" />
     </div>
     <input type="text" name="filename" id="filename" autocomplete="off"><br />
     <button onclick="upload();">Upload</button><br/>
@@ -30,10 +30,14 @@
     }
 
     function upload() {
+      if (!window.data || !window.data.blob) {
+        $("#result").text("Please paste image first!");
+        return;
+      }
       form = new FormData();
       form.append('file', data.blob, $("#filename").val());
       $.post({
-        url: '/upload.php',
+        url: 'upload.php',
         data: form,
         processData: false,
         contentType: false,

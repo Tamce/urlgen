@@ -1,0 +1,19 @@
+{
+    "name": "tamce/urlgen",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Tamce",
+            "email": "tamce@outlook.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "./src"
+        }
+    },
+    "require": {
+        "qiniu/php-sdk": "^7.2"
+    }
+}

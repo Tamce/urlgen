@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>UrlGen</title>
+  <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.bootcss.com/paste.js/0.0.21/paste.js"></script>
+</head>
+<body>
+  <div style="text-align: center">
+    <div style="height: 300px; margin-bottom: 24px;">
+      <img id="image" style="max-height: 100%; max-width: 100%;" /><br />
+    </div>
+    <input type="text" name="filename" id="filename" autocomplete="off"><br />
+    <button onclick="upload();">Upload</button><br/>
+    <p id="result">Please paste image</p>
+  </div>
+  <script>
+    function getFileName(mime) {
+      let ext = mime.substr(mime.lastIndexOf('/') + 1);
+      let t = new Date();
+      let result = '' + t.getUTCFullYear()
+        + (t.getUTCMonth() < 9 ? '0' : '') + (1 + t.getUTCMonth())
+        + (t.getUTCDate() + 1) + Math.floor(Math.random() * 100000)
+        + '.' + ext;
+      console.log(result);
+      return result;
+    }
+
+    function upload() {
+      form = new FormData();
+      form.append('file', data.blob, $("#filename").val());
+      $.post({
+        url: '/upload.php',
+        data: form,
+        processData: false,
+        contentType: false,
+      }).then(function (data) {
+        $("#result").text(data.url);
+      });
+    }
+
+    $('#filename').pastableTextarea();
+    $('*').on('pasteImage', function (ev, data){
+      console.log(data);
+      window.data = data;
+      $("#filename").val(getFileName(data.blob.type));
+      $("#image").attr('src', data.dataURL);
+    });
+  </script>
+</body>
+</html>
